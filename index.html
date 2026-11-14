@@ -69,7 +69,8 @@ footer {
  color:#65758a;
 }
 </style><link rel="icon" type="image/png" href="">
-</head>
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#07152e"></head>
 <body>
 
 <header>
@@ -291,5 +292,9 @@ function saveTasks() {
 showTasks();
 </script>
 
-</body>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js");
+}
+</script></body>
 </html>
