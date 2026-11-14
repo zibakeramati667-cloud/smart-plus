@@ -1,0 +1,10 @@
+{
+  "name": "Smart Plus",
+  "short_name": "Smart Plus",
+  "description": "همه ابزارهای کاربردی در یک جا",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#07152e",
+  "theme_color": "#07152e",
+  "icons": []
+}
