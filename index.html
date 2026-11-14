@@ -1,0 +1,295 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smart Plus</title>
+<style>
+body {
+ margin:0;
+ background:#eef3fa;
+ font-family:Tahoma;
+ color:#24344d;
+}
+header {
+ background:#123b70;
+ color:white;
+ padding:25px;
+ text-align:center;
+}
+header h1 {margin:0 0 10px;}
+nav {
+ text-align:center;
+ padding:15px;
+ background:white;
+}
+nav a {
+ color:#1769aa;
+ text-decoration:none;
+ margin:10px;
+ font-size:14px;
+}
+.container {
+ max-width:750px;
+ margin:25px auto;
+ padding:10px;
+}
+.card {
+ background:white;
+ padding:22px;
+ margin:18px 0;
+ border-radius:15px;
+ box-shadow:0 3px 12px #d4dce8;
+}
+h2 {color:#1769aa;}
+input,textarea,select {
+ width:90%;
+ padding:12px;
+ margin:8px;
+ border:1px solid #ccd5e2;
+ border-radius:8px;
+ font-family:Tahoma;
+ box-sizing:border-box;
+}
+button {
+ background:#1769aa;
+ color:white;
+ border:0;
+ padding:12px 20px;
+ margin:5px;
+ border-radius:8px;
+ cursor:pointer;
+}
+button:hover {background:#104d83;}
+.result {color:#1769aa;font-weight:bold;}
+footer {
+ text-align:center;
+ padding:25px;
+ color:#65758a;
+}
+</style><link rel="icon" type="image/png" href="">
+</head>
+<body>
+
+<header>
+<button onclick="toggleTheme()">
+🌙 تغییر حالت شب و روز
+</button>
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle("dark-mode");
+
+  localStorage.setItem(
+    "darkMode",
+    document.body.classList.contains("dark-mode")
+  );
+}
+
+if (localStorage.getItem("darkMode") === "true") {
+  document.body.classList.add("dark-mode");
+}
+</script>
+<style>
+body.dark-mode {
+  background: #151a25 !important;
+  color: white !important;
+}
+
+body.dark-mode section,
+body.dark-mode .card {
+  background: #263247 !important;
+  color: white !important;
+}
+
+body.dark-mode input,
+body.dark-mode textarea {
+  background: #35445c;
+  color: white;
+}
+</style><div style="text-align:center;color:white;margin:10px">
+  <h3 id="liveClock">در حال بارگذاری ساعت...</h3>
+  <p id="liveDate"></p>
+</div>
+
+<script>
+function updateClock() {
+  const now = new Date();
+
+  document.getElementById("liveClock").textContent =
+    now.toLocaleTimeString("fa-IR");
+
+  document.getElementById("liveDate").textContent =
+    now.toLocaleDateString("fa-IR");
+}
+
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+<h1>Smart Plus</h1>
+<p>دنیایی از ابزارهای هوشمند</p>
+</header>
+
+<nav>
+<a href="#calculator">ماشین حساب</a>
+<a href="#notes">یادداشت</a>
+<a href="#converter">مبدل واحد</a>
+</nav>
+
+<div class="container">
+
+<div class="card" id="calculator">
+<h2>🧮 ماشین حساب</h2>
+<input id="a" type="number" placeholder="عدد اول">
+<input id="b" type="number" placeholder="عدد دوم">
+<br>
+<button onclick="calc('+')">جمع +</button>
+<button onclick="calc('-')">تفریق -</button>
+<button onclick="calc('*')">ضرب ×</button>
+<button onclick="calc('/')">تقسیم ÷</button>
+<p class="result" id="result">نتیجه:</p>
+</div>
+
+<div class="card" id="notes">
+<h2>📝 دفترچه یادداشت</h2>
+<textarea id="note" rows="5"
+placeholder="یادداشت خود را بنویسید"></textarea>
+<br>
+<button onclick="saveNote()">ذخیره یادداشت</button>
+<button onclick="clearNote()">پاک کردن</button>
+<p id="message"></p>
+</div>
+
+<div class="card" id="converter">
+<h2>🔄 مبدل واحد</h2>
+<input id="number" type="number" placeholder="عدد مورد نظر">
+<select id="unit">
+<option value="cm">سانتی متر به متر</option>
+<option value="m">متر به کیلومتر</option>
+<option value="g">گرم به کیلوگرم</option>
+<option value="c">سانتی گراد به فارنهایت</option>
+</select>
+<br>
+<button onclick="convert()">تبدیل کن</button>
+<p class="result" id="converted">نتیجه تبدیل:</p>
+</div>
+
+</div>
+
+<footer>
+Smart Plus - ابزارهای کاربردی شما
+</footer>
+
+<script>
+function calc(op) {
+ var a=Number(document.getElementById("a").value);
+ var b=Number(document.getElementById("b").value);
+ var r;
+ if(op==='+') r=a+b;
+ if(op==='-') r=a-b;
+ if(op==='*') r=a*b;
+ if(op==='/') r=b===0?'تقسیم بر صفر ممکن نیست':a/b;
+ document.getElementById("result").innerText="نتیجه: "+r;
+}
+
+function saveNote() {
+ var note=document.getElementById("note").value;
+ try {
+ localStorage.setItem("smartNote",note);
+ document.getElementById("message").innerText="یادداشت ذخیره شد!";
+ } catch(e) {
+ document.getElementById("message").innerText="خطا در ذخیره";
+ }
+}
+
+function clearNote() {
+ document.getElementById("note").value="";
+ try {localStorage.removeItem("smartNote");} catch(e) {}
+ document.getElementById("message").innerText="یادداشت پاک شد";
+}
+
+try {
+ document.getElementById("note").value=localStorage.getItem("smartNote") || "";
+} catch(e) {}
+
+function convert() {
+ var n=Number(document.getElementById("number").value);
+ var u=document.getElementById("unit").value;
+ var r;
+ if(document.getElementById("number").value==="") {
+ document.getElementById("converted").innerText="لطفاً عدد وارد کن";
+ return;
+ }
+ if(u==="cm") r=n/100+" متر";
+ if(u==="m") r=n/1000+" کیلومتر";
+ if(u==="g") r=n/1000+" کیلوگرم";
+ if(u==="c") r=(n*9/5+32)+" فارنهایت";
+ document.getElementById("converted").innerText="نتیجه: "+r;
+}
+</script><section style="background:white;padding:25px;margin:20px;border-radius:15px;direction:rtl">
+  <h2>📋 فهرست کارهای من</h2>
+
+  <input id="taskInput" placeholder="کار جدید را بنویس..."
+  style="padding:12px;width:65%">
+
+  <button onclick="addTask()" style="padding:12px">
+    افزودن +
+  </button>
+
+  <ul id="taskList"></ul>
+</section>
+
+<script>
+let tasks = JSON.parse(localStorage.getItem("myTasks") || "[]");
+
+function showTasks() {
+  let list = document.getElementById("taskList");
+  list.innerHTML = "";
+
+  tasks.forEach((task, index) => {
+    let item = document.createElement("li");
+    let check = document.createElement("input");
+    check.type = "checkbox";
+    check.checked = task.done;
+
+    check.onchange = function() {
+      tasks[index].done = check.checked;
+      saveTasks();
+    };
+
+    let span = document.createElement("span");
+    span.textContent = task.name;
+    if (task.done) span.style.textDecoration = "line-through";
+
+    
+   let deleteBtn = document.createElement("button");
+deleteBtn.textContent = "حذف";
+deleteBtn.onclick = function() {
+  tasks.splice(index, 1);
+  saveTasks();
+};
+
+item.append(check, span, deleteBtn); list.appendChild(item);
+  });
+}
+
+function addTask() {
+  let input = document.getElementById("taskInput");
+  if (input.value.trim() === "") return;
+
+  tasks.push({name: input.value.trim(), done: false});
+  input.value = "";
+  saveTasks();
+}
+
+function saveTasks() {
+  localStorage.setItem("myTasks", JSON.stringify(tasks));
+  showTasks();
+}
+
+showTasks();
+</script>
+
+</body>
+</html>
